@@ -192,8 +192,7 @@ class CrmInvoiceController {
     def show(Long id) {
         def crmInvoice = CrmInvoice.findByIdAndTenantId(id, TenantUtils.tenant)
         if (crmInvoice) {
-            return [crmInvoice: crmInvoice, customerContact: crmInvoice.getCustomer(), deliveryContact: crmInvoice.getDeliveryContact(),
-                    selection: params.getSelectionURI()]
+            return [crmInvoice: crmInvoice, customer: crmInvoice.getCustomer(), selection: params.getSelectionURI()]
         } else {
             flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Order'), id])
             redirect(action: "index")

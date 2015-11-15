@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'crmInvoice.label', default: 'Order')}"/>
+    <g:set var="entityName" value="${message(code: 'crmInvoice.label', default: 'Invoice')}"/>
     <title><g:message code="crmInvoice.show.title" args="[entityName, crmInvoice]"/></title>
     <r:script>
         $(document).ready(function () {
@@ -31,7 +31,7 @@
         <g:if test="${crmInvoice.syncPublished}">
             <i class="icon-warning-sign"></i>
         </g:if>
-        <small>${(crmInvoice.customerName ?: customerContact)?.encodeAsHTML()}</small>
+        <small>${(crmInvoice.customerName ?: customer)?.encodeAsHTML()}</small>
     </h1>
 </header>
 
@@ -55,34 +55,35 @@
             <dt><g:message code="crmInvoice.number.label" default="Number"/></dt>
             <dd><g:fieldValue bean="${crmInvoice}" field="number"/></dd>
 
-            <dt><g:message code="crmInvoice.orderDate.label" default="Date"/></dt>
-            <dd><g:formatDate type="date" date="${crmInvoice.orderDate}"/></dd>
+            <g:if test="${crmInvoice?.invoiceStatus}">
+                <dt><g:message code="crmInvoice.invoiceStatus.label" default="Status"/></dt>
 
-            <g:if test="${crmInvoice.deliveryDate}">
-                <dt><g:message code="crmInvoice.deliveryDate.label" default="Date"/></dt>
-                <dd><g:formatDate type="date" date="${crmInvoice.deliveryDate}"/></dd>
+                <dd><g:fieldValue bean="${crmInvoice}" field="invoiceStatus"/></dd>
             </g:if>
 
-            <g:if test="${crmInvoice?.orderStatus}">
-                <dt><g:message code="crmInvoice.orderStatus.label" default="Status"/></dt>
+            <dt><g:message code="crmInvoice.invoiceDate.label" default="Date"/></dt>
+            <dd><g:formatDate type="date" date="${crmInvoice.invoiceDate}"/></dd>
 
-                <dd><g:fieldValue bean="${crmInvoice}" field="orderStatus"/></dd>
+            <g:if test="${crmInvoice.dueDate}">
+                <dt><g:message code="crmInvoice.dueDate.label" default="Due"/></dt>
+                <dd><g:formatDate type="date" date="${crmInvoice.dueDate}"/></dd>
             </g:if>
-            <g:if test="${crmInvoice.orderType}">
-                <dt><g:message code="crmInvoice.orderType.label" default="Order Type"/></dt>
+            <g:if test="${crmInvoice.paymentTerm}">
+                <dt><g:message code="crmInvoice.paymentTerm.label" default="Payment terms"/></dt>
 
-                <dd><g:fieldValue bean="${crmInvoice}" field="orderType"/></dd>
+                <dd><g:fieldValue bean="${crmInvoice}" field="paymentTerm"/></dd>
+            </g:if>
+
+
+            <g:if test="${crmInvoice.ref}">
+                <dt><g:message code="crmInvoice.reference.label" default="Reference"/></dt>
+                <dd><crm:referenceLink reference="${crmInvoice.reference}"/></dd>
             </g:if>
 
             <g:if test="${crmInvoice.reference2}">
                 <dt><g:message code="crmInvoice.reference2.label" default="Our Reference"/></dt>
 
                 <dd><g:fieldValue bean="${crmInvoice}" field="reference2"/></dd>
-            </g:if>
-
-            <g:if test="${crmInvoice.campaign}">
-                <dt><g:message code="crmInvoice.campaign.label" default="Campaign"/></dt>
-                <dd><g:fieldValue bean="${crmInvoice}" field="campaign"/></dd>
             </g:if>
         </dl>
     </div>
@@ -99,7 +100,7 @@
             </g:if>
 
             <dt><g:message code="crmInvoice.invoice.label"/></dt>
-            <g:render template="address" model="${[crmContact: customerContact, address: invoiceAddress]}"/>
+            <g:render template="address" model="${[crmContact: customer, address: invoiceAddress]}"/>
 
             <g:if test="${crmInvoice.customerEmail}">
                 <dt><g:message code="crmInvoice.customerEmail.label" default="Email"/></dt>
@@ -130,7 +131,7 @@
         <dl>
             <dt><g:message code="crmInvoice.delivery.label"/></dt>
             <g:render template="address"
-                      model="${[crmContact: deliveryContact, address: deliveryAddress ?: invoiceAddress]}"/>
+                      model="${[crmContact: customer, address: deliveryAddress ?: invoiceAddress]}"/>
 
             <g:if test="${crmInvoice.reference3}">
                 <dt><g:message code="crmInvoice.reference3.label" default="Reference 3"/></dt>
@@ -143,12 +144,6 @@
 
                 <dd><g:fieldValue bean="${crmInvoice}" field="reference4"/></dd>
             </g:if>
-
-            <g:if test="${crmInvoice.deliveryType}">
-                <dt><g:message code="crmInvoice.deliveryType.label" default="Delivery Type"/></dt>
-
-                <dd><g:fieldValue bean="${crmInvoice}" field="deliveryType"/></dd>
-            </g:if>
         </dl>
     </div>
 
@@ -156,28 +151,28 @@
         <dl>
             <dt><g:message code="crmInvoice.totalAmount.label" default="Amount ex. VAT"/></dt>
 
-            <dd><g:formatNumber type="currency" currencyCode="SEK"
+            <dd><g:formatNumber type="currency" currencyCode="${crmInvoice.currency}"
                                 number="${crmInvoice.totalAmount}"/></dd>
             <dt><g:message code="crmInvoice.totalVat.label" default="VAT"/></dt>
 
-            <dd><g:formatNumber type="currency" currencyCode="SEK"
+            <dd><g:formatNumber type="currency" currencyCode="${crmInvoice.currency}"
                                 number="${crmInvoice.totalVat}"/></dd>
 
             <dt><g:message code="crmInvoice.totalAmountVAT.label" default="Amount incl. VAT"/></dt>
 
-            <dd><g:formatNumber type="currency" currencyCode="SEK"
+            <dd><g:formatNumber type="currency" currencyCode="${crmInvoice.currency}"
                                 number="${crmInvoice.totalAmountVAT}"/></dd>
 
             <g:set var="cent" value="${Math.round(crmInvoice.totalAmountVAT).intValue() - crmInvoice.totalAmountVAT}"/>
             <g:if test="${cent > 0.005 || cent < -0.005}">
                 <dt><g:message code="crmInvoice.cent.label" default="Öresutjämning"/></dt>
 
-                <dd><g:formatNumber type="currency" currencyCode="SEK" number="${cent}"/>
+                <dd><g:formatNumber type="currency" currencyCode="${crmInvoice.currency}" number="${cent}"/>
                 </dd>
             </g:if>
-            <dt><g:message code="crmInvoice.paymentAmount.label" default="Totals inc. VAT"/></dt>
+            <dt><g:message code="crmInvoice.totalAmountVAT.label" default="Totals inc. VAT"/></dt>
 
-            <dd><h3 style="margin-top: 0;"><g:formatNumber type="currency" currencyCode="SEK"
+            <dd><h3 style="margin-top: 0;"><g:formatNumber type="currency" currencyCode="${crmInvoice.currency}"
                                                            number="${crmInvoice.totalAmountVAT}"
                                                            maxFractionDigits="0"/></h3>
             </dd>
@@ -205,7 +200,7 @@
             <g:if test="${crmInvoice.payedAmount}">
                 <dt><g:message code="crmInvoice.payedAmount.label" default="Payed Amount"/></dt>
 
-                <dd><g:formatNumber type="currency" currencyCode="SEK"
+                <dd><g:formatNumber type="currency" currencyCode="${crmInvoice.currency}"
                                     number="${crmInvoice.payedAmount}"/></dd>
             </g:if>
         </dl>
@@ -229,12 +224,6 @@
                     group="true" visual="warning" icon="icon-pencil icon-white"
                     label="crmInvoice.button.edit.label" permission="crmInvoice:edit">
         </crm:button>
-
-        <crm:button type="link" action="create"
-                    group="true" visual="success" icon="icon-file icon-white"
-                    label="crmInvoice.button.create.label"
-                    title="crmInvoice.button.create.help"
-                    permission="crmInvoice:create"/>
 
         <div class="btn-group">
             <select:link action="export" accesskey="p" params="${[ns:'crmInvoice']}" selection="${new URI('bean://crmInvoiceService/list?id=' + crmInvoice.id)}" class="btn btn-info">
@@ -285,7 +274,7 @@
 </div>
 
 <div class="tab-pane" id="items">
-    <g:render template="items" model="${[list: crmInvoice.items]}"/>
+    <g:render template="items" model="${[bean:crmInvoice, list: crmInvoice.items]}"/>
 </div>
 
 <crm:pluginViews location="tabs" var="view">

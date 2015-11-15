@@ -2,32 +2,14 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'crmInvoice.label', default: 'Order')}"/>
+    <g:set var="entityName" value="${message(code: 'crmInvoice.label', default: 'Invoice')}"/>
     <title><g:message code="crmInvoice.find.title" args="[entityName]"/></title>
     <r:require modules="datepicker,autocomplete"/>
     <script type="text/javascript">
         jQuery(document).ready(function () {
             <crm:datepicker/>
 
-            $("input[name='status']").autocomplete("${createLink(action: 'autocompleteOrderStatus', params: [max: 20])}", {
-                remoteDataType: 'json',
-                useCache: false,
-                filter: false,
-                minChars: 1,
-                preventDefaultReturn: true,
-                selectFirst: true
-            });
-
-            $("input[name='type']").autocomplete("${createLink(action: 'autocompleteOrderType', params: [max: 20])}", {
-                remoteDataType: 'json',
-                useCache: false,
-                filter: false,
-                minChars: 1,
-                preventDefaultReturn: true,
-                selectFirst: true
-            });
-
-            $("input[name='delivery']").autocomplete("${createLink(action: 'autocompleteDeliveryType', params: [max: 20])}", {
+            $("input[name='status']").autocomplete("${createLink(action: 'autocompleteInvoiceStatus', params: [max: 20])}", {
                 remoteDataType: 'json',
                 useCache: false,
                 filter: false,
@@ -97,16 +79,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="control-group">
-                    <label class="control-label">
-                        <g:message code="crmInvoice.campaign.label"/>
-                    </label>
-
-                    <div class="controls">
-                        <g:textField name="campaign" value="${cmd.campaign}" class="span8"/>
-                    </div>
-                </div>
             </div>
 
             <div class="span4">
@@ -154,17 +126,7 @@
             <div class="span4">
                 <div class="control-group">
                     <label class="control-label">
-                        <g:message code="crmInvoice.orderType.label"/>
-                    </label>
-
-                    <div class="controls">
-                        <g:textField name="type" value="${cmd.type}" class="span11"/>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label">
-                        <g:message code="crmInvoice.orderStatus.label"/>
+                        <g:message code="crmInvoice.invoiceStatus.label"/>
                     </label>
 
                     <div class="controls">
@@ -174,11 +136,11 @@
 
                 <div class="control-group">
                     <label class="control-label">
-                        <g:message code="crmInvoice.deliveryType.label"/>
+                        <g:message code="crmInvoiceItem.productId.label"/>
                     </label>
 
                     <div class="controls">
-                        <g:textField name="delivery" value="${cmd.delivery}" class="span11"/>
+                        <g:textField name="product" value="${cmd.product}" class="span11"/>
                     </div>
                 </div>
 

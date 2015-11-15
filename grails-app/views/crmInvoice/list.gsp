@@ -16,17 +16,17 @@
     <tr>
         <crm:sortableColumn property="number"
                             title="${message(code: 'crmInvoice.number.label', default: 'Number')}"/>
-        <crm:sortableColumn property="orderDate"
-                            title="${message(code: 'crmInvoice.orderDate.label', default: 'Date')}"/>
-        <crm:sortableColumn property="orderStatus"
-                            title="${message(code: 'crmInvoice.orderStatus.label', default: 'Status')}"/>
         <crm:sortableColumn property="customerLastName"
                             title="${message(code: 'crmInvoice.customer.label', default: 'Customer')}"/>
-        <crm:sortableColumn property="deliveryType"
-                            title="${message(code: 'crmInvoice.deliveryType.label', default: 'Delivery')}"/>
-        <th><g:message code="crmInvoice.delivery.label"/></th>
+        <th><g:message code="crmInvoice.invoice.label"/></th>
+        <crm:sortableColumn property="invoiceDate"
+                            title="${message(code: 'crmInvoice.invoiceDate.label', default: 'Date')}"/>
+        <crm:sortableColumn property="dueDate"
+                            title="${message(code: 'crmInvoice.dueDate.label', default: 'Due')}"/>
+        <crm:sortableColumn property="invoiceStatus"
+                            title="${message(code: 'crmInvoice.invoiceStatus.label', default: 'Status')}"/>
         <crm:sortableColumn property="totalAmount" style="text-align: right;"
-                            title="${message(code: 'crmInvoice.paymentAmount.label', default: 'Order Value')}"/>
+                            title="${message(code: 'crmInvoice.totalAmount.label', default: 'Amount')}"/>
     </tr>
     </thead>
     <tbody>
@@ -44,26 +44,28 @@
 
             <td>
                 <select:link controller="crmInvoice" action="show" id="${crmInvoice.id}" selection="${selection}">
-                    <g:formatDate type="date" date="${crmInvoice.orderDate}"/>
+                    ${fieldValue(bean: crmInvoice, field: "customerName")}
                 </select:link>
             </td>
-
             <td>
-                <g:fieldValue bean="${crmInvoice}" field="orderStatus"/>
+                ${fieldValue(bean: crmInvoice, field: "invoice")}
             </td>
 
             <td>
-                ${fieldValue(bean: crmInvoice, field: "customerName")}
+                <g:formatDate type="date" date="${crmInvoice.invoiceDate}"/>
             </td>
 
             <td>
-                ${fieldValue(bean: crmInvoice, field: "deliveryType")}
+                <g:formatDate type="date" date="${crmInvoice.dueDate}"/>
             </td>
+
             <td>
-                ${fieldValue(bean: crmInvoice, field: "delivery")}
+                <g:fieldValue bean="${crmInvoice}" field="invoiceStatus"/>
             </td>
+
             <td style="text-align: right;">
-                <g:formatNumber type="currency" currencyCode="SEK" number="${crmInvoice.totalAmountVAT}"
+                <g:formatNumber type="currency" currencyCode="${crmInvoice.currency}"
+                                number="${crmInvoice.totalAmountVAT}"
                                 maxFractionDigits="0"/>
             </td>
         </tr>

@@ -2,11 +2,11 @@
     <thead>
     <tr>
         <th><g:message code="crmInvoice.number.label" default="Number"/>
-        <th><g:message code="crmInvoice.orderDate.label" default="Order Date"/>
-        <th><g:message code="crmInvoice.orderStatus.label" default="Status"/>
-        <th><g:message code="crmInvoice.deliveryDate.label" default="Delivery Date"/>
-        <th><g:message code="crmInvoice.delivery.label" default="Delivery Address"/>
-        <th><g:message code="crmInvoice.paymentAmount.label" default="Order Value"/>
+        <th><g:message code="crmInvoice.invoiceDate.label" default="Invoice Date"/>
+        <th><g:message code="crmInvoice.dueDate.label" default="Due Date"/>
+        <th><g:message code="crmInvoice.invoiceStatus.label" default="Status"/>
+        <th><g:message code="crmInvoice.invoice.label" default="Address"/>
+        <th><g:message code="crmInvoice.totalAmountVAT.label" default="Amount"/>
     </tr>
     </thead>
     <tbody>
@@ -21,23 +21,23 @@
 
             <td>
                 <g:link controller="crmInvoice" action="show" id="${crmInvoice.id}">
-                    <g:formatDate type="date" date="${crmInvoice.orderDate}"/>
+                    <g:formatDate type="date" date="${crmInvoice.invoiceDate}"/>
                 </g:link>
             </td>
 
             <td>
-                <g:fieldValue bean="${crmInvoice}" field="orderStatus"/>
+                <g:formatDate type="date" date="${crmInvoice.dueDate}"/>
             </td>
 
             <td>
-                <g:formatDate type="date" date="${crmInvoice.deliveryDate}"/>
+                <g:fieldValue bean="${crmInvoice}" field="invoiceStatus"/>
             </td>
 
             <td>
-                ${fieldValue(bean: crmInvoice, field: "delivery")}
+                ${fieldValue(bean: crmInvoice, field: "invoice")}
             </td>
             <td style="font-weight:bold;text-align: right;">
-                <g:formatNumber type="currency" currencyCode="SEK" number="${crmInvoice.totalAmountVAT}"
+                <g:formatNumber type="currency" currencyCode="${crmInvoice.currency}" number="${crmInvoice.totalAmountVAT}"
                                 maxFractionDigits="0"/>
             </td>
         </tr>
