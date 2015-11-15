@@ -1,0 +1,23 @@
+= GR8 CRM - Invoice Management User Interface
+Göran Ehrsson <goran@technipelago.se>
+:source-highlighter: prettify
+:homepage: http://gr8crm.github.io
+:license: This plugin is licensed with http://www.apache.org/licenses/LICENSE-2.0.html[Apache License version 2.0]
+
+CRM = http://en.wikipedia.org/wiki/Customer_relationship_management[Customer Relationship Management]
+
+GR8 CRM is a set of http://www.grails.org/[Grails Web Application Framework]
+plugins that makes it easy to develop web application with CRM functionality.
+With CRM we mean features like:
+
+- Contact Management
+- Task/Todo Lists
+- Project Management
+
+== Invoice Management User Interface for GR8 CRM
+This plugin provides a Twitter Bootstrap based user interface for invocie management in GR8 CRM applications.
+It depends on the *crm-invocie* plugin for services and persistence.
+
+=== Documentation
+
+Complete documentation for this plugin can be found at http://gr8crm.github.io/plugins/crm-invocie-ui/[gr8crm.github.io]

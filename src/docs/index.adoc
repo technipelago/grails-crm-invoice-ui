@@ -1,0 +1,95 @@
+= GR8 CRM - Invoice Management User Interface
+Göran Ehrsson <goran@technipelago.se>
+:description: Official documentation for the GR8 CRM Invoice Management User Interface Plugin
+:keywords: groovy, grails, crm, gr8crm, documentation
+:toc:
+:numbered:
+:icons: font
+:imagesdir: ./images
+:source-highlighter: prettify
+:homepage: http://gr8crm.github.io
+:gr8crm: GR8 CRM
+:gr8source: https://github.com/technipelago/grails-crm-invoice-ui
+:license: This plugin is licensed with http://www.apache.org/licenses/LICENSE-2.0.html[Apache License version 2.0]
+
+== Introduction
+
+{gr8crm} is a set of http://www.grails.org/[Grails Web Application Framework]
+plugins that makes it easy to develop web applications with CRM functionality.
+
+You can find more information about {gr8crm} on the main documentation site {homepage}.
+
+=== Customer Relationship Management
+
+Customer relationship management (CRM) is a system for managing a company’s interactions with current and future customers.
+It involves using technology to organize, automate and synchronize sales, marketing, customer service, and technical support.
+http://en.wikipedia.org/wiki/Customer_relationship_management[Wikipedia]
+
+The {gr8crm} "Ecosystem" currently contains over 40 Grails plugins. For a complete list of plugins see {homepage}.
+
+Each {gr8crm} plugin defines a http://martinfowler.com/bliki/BoundedContext.html[Bounded Context]
+that focus on one specific domain, for example *contact*, *project* or *document*.
+
+== Invoice Management User Interface Plugin
+
+The `crm-invoice-ui` plugin is a companion plugin to the `crm-invoice` plugin.
+It provides a Twitter Bootstrap based user interface for invoice management.
+
+=== Search invoices
+
+To query for invoices you visit `crmIndex/index` which will show the query form.
+
+image::invoice-find.png[The query form]
+
+You can enter query values in any field and then hit the `Search` button to search for invoices matching your query.
+If you don't enter any query value all invoices will be included in the search result.
+
+If the query result contains more than one invoice, an invoice list will be displayed. If the query result contains
+exactly one invoice, then details for that invoice will be displayed.
+I.e. it will skip the `list` view and go directly to the `show` view.
+
+image::invoice-list.png[The invoice list]
+
+You can click on any invoice to show details for that invoice.
+
+The `Export` button shows the *print/export* page but no layouts are provided by this plugin.
+You must add an event `@Listener` in an application service that listens for the *crmInvoice.exportLayout* event and return layout definitions.
+Look at https://github.com/technipelago/grails-crm-invoice-ui/blob/master/grails-app/controllers/grails/plugins/crm/invoice/CrmInvoiceController.groovy#L202[the source^] for `CrmInvoiceController#export()` for more information.
+
+=== Invoice details
+
+The invoice details page `crmInvoice/show` show all details for an invoice.
+Here you will find invoice number, customer name, invoice and delivery addresses and more.
+
+image::invoice-show.png[Invoice details]
+
+If the `crm-tags` plugin is installed you can see existing tags and add new tags to an invoice.
+
+=== Edit invoice details
+
+To edit invoice details you hit the `Edit` button. This will display the edit page `crmInvoice/edit`.
+Here you can alter values and then hit `Save` to store the new values in the database.
+
+image::invoice-edit-1.png[Edit invoice details]
+
+Invoice items are listed on a separate tab. Items can be edited, added and deleted from this tab.
+
+image::invoice-edit-2.png[Edit invoice items]
+
+== Changes
+
+2.4.0:: First public release
+
+== License
+
+{license}
+
+== Source Code
+
+The source code for this plugin is available at {gr8source}
+
+== Contributing
+
+Please report {gr8source}/issues[issues or suggestions].
+
+Want to improve the plugin: Fork the {gr8source}[repository] and send a pull request.
