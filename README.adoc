@@ -15,9 +15,9 @@ With CRM we mean features like:
 - Project Management
 
 == Invoice Management User Interface for GR8 CRM
-This plugin provides a Twitter Bootstrap based user interface for invocie management in GR8 CRM applications.
-It depends on the *crm-invocie* plugin for services and persistence.
+This plugin provides a Twitter Bootstrap based user interface for invoice management in GR8 CRM applications.
+It depends on the *crm-invoice* plugin for services and persistence.
 
 === Documentation
 
-Complete documentation for this plugin can be found at http://gr8crm.github.io/plugins/crm-invocie-ui/[gr8crm.github.io]
+Complete documentation for this plugin can be found at http://gr8crm.github.io/plugins/crm-invoice-ui/[gr8crm.github.io]
