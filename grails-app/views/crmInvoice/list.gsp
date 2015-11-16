@@ -26,7 +26,7 @@
         <crm:sortableColumn property="invoiceStatus"
                             title="${message(code: 'crmInvoice.invoiceStatus.label', default: 'Status')}"/>
         <crm:sortableColumn property="totalAmount" style="text-align: right;"
-                            title="${message(code: 'crmInvoice.totalAmount.label', default: 'Amount')}"/>
+                            title="${message(code: 'crmInvoice.totalAmountVAT.label', default: 'Amount')}"/>
     </tr>
     </thead>
     <tbody>

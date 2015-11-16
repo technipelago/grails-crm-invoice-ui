@@ -12,10 +12,11 @@
 
 <g:each in="${layouts?.sort{it.name}}" var="l">
     <g:form action="export" class="well">
+        <input type="hidden" name="id" value="${id}"/>
         <input type="hidden" name="q" value="${select.encode(selection: selection)}"/>
-        <input type="hidden" name="ns" value="${l.ns}"/>
-        <input type="hidden" name="topic" value="${l.topic}"/>
-        <input type="hidden" name="template" value="${l.template}"/>
+        <g:each in="${l}" var="ly">
+            <input type="hidden" name="${ly.key}" value="${ly.value}"/>
+        </g:each>
 
         <div class="row-fluid">
             <div class="span7">
