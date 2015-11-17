@@ -158,11 +158,6 @@
             <dd><g:formatNumber type="currency" currencyCode="${crmInvoice.currency}"
                                 number="${crmInvoice.totalVat}"/></dd>
 
-            <dt><g:message code="crmInvoice.totalAmountVAT.label" default="Amount incl. VAT"/></dt>
-
-            <dd><g:formatNumber type="currency" currencyCode="${crmInvoice.currency}"
-                                number="${crmInvoice.totalAmountVAT}"/></dd>
-
             <g:set var="cent" value="${Math.round(crmInvoice.totalAmountVAT).intValue() - crmInvoice.totalAmountVAT}"/>
             <g:if test="${cent > 0.005 || cent < -0.005}">
                 <dt><g:message code="crmInvoice.cent.label" default="Öresutjämning"/></dt>
