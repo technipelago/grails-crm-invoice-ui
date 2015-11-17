@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <g:set var="entityName" value="${message(code: 'crmInvoice.label', default: 'Order')}"/>
+    <g:set var="entityName" value="${message(code: 'crmInvoice.label', default: 'Invoice')}"/>
     <title><g:message code="crmInvoice.edit.title" args="[entityName, crmInvoice]"/></title>
     <r:require modules="datepicker,autocomplete"/>
     <script type="text/javascript">
@@ -191,14 +191,14 @@
 
         <div class="control-group">
             <label class="control-label">
-                <g:message code="crmInvoice.orderDate.label"/>
+                <g:message code="crmInvoice.invoiceDate.label"/>
             </label>
 
             <div class="controls">
                 <div class="inline input-append date"
-                     data-date="${formatDate(type: 'date', date: crmInvoice.orderDate ?: new Date())}">
-                    <g:textField name="orderDate" class="span10" size="10"
-                                 value="${formatDate(type: 'date', date: crmInvoice.orderDate)}"/><span
+                     data-date="${formatDate(type: 'date', date: crmInvoice.invoiceDate ?: new Date())}">
+                    <g:textField name="invoiceDate" class="span10" size="10"
+                                 value="${formatDate(type: 'date', date: crmInvoice.invoiceDate)}"/><span
                         class="add-on"><i
                             class="icon-th"></i></span>
                 </div>
@@ -207,14 +207,14 @@
 
         <div class="control-group">
             <label class="control-label">
-                <g:message code="crmInvoice.deliveryDate.label"/>
+                <g:message code="crmInvoice.dueDate.label"/>
             </label>
 
             <div class="controls">
                 <div class="inline input-append date"
-                     data-date="${formatDate(type: 'date', date: crmInvoice.deliveryDate ?: new Date())}">
-                    <g:textField name="deliveryDate" class="span10" size="10"
-                                 value="${formatDate(type: 'date', date: crmInvoice.deliveryDate)}"/><span
+                     data-date="${formatDate(type: 'date', date: crmInvoice.dueDate ?: new Date())}">
+                    <g:textField name="dueDate" class="span10" size="10"
+                                 value="${formatDate(type: 'date', date: crmInvoice.dueDate)}"/><span
                         class="add-on"><i
                             class="icon-th"></i></span>
                 </div>
@@ -223,24 +223,12 @@
 
         <div class="control-group">
             <label class="control-label">
-                <g:message code="crmInvoice.orderStatus.label"/>
+                <g:message code="crmInvoice.invoiceStatus.label"/>
             </label>
 
             <div class="controls">
-                <g:select name="orderStatus.id" from="${metadata.orderStatusList}"
-                          value="${crmInvoice.orderStatus?.id}"
-                          optionKey="id" class="span12"/>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label">
-                <g:message code="crmInvoice.orderType.label"/>
-            </label>
-
-            <div class="controls">
-                <g:select name="orderType.id" from="${metadata.orderTypeList}"
-                          value="${crmInvoice.orderType?.id}"
+                <g:select name="invoiceStatus.id" from="${metadata.invoiceStatusList}"
+                          value="${crmInvoice.invoiceStatusId}"
                           optionKey="id" class="span12"/>
             </div>
         </div>
@@ -262,16 +250,6 @@
 
             <div class="controls">
                 <g:textField name="reference2" value="${crmInvoice.reference2}" class="span12"/>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label">
-                <g:message code="crmInvoice.campaign.label"/>
-            </label>
-
-            <div class="controls">
-                <g:textField name="campaign" value="${crmInvoice.campaign}" class="span12"/>
             </div>
         </div>
     </div>
@@ -358,17 +336,6 @@
 
 <div class="span3">
     <div class="row-fluid">
-        <div class="control-group">
-            <label class="control-label">
-                <g:message code="crmInvoice.deliveryType.label"/>
-            </label>
-
-            <div class="controls">
-                <g:select name="deliveryType.id" from="${metadata.deliveryTypeList}"
-                          value="${crmInvoice.deliveryType?.id}"
-                          optionKey="id" class="span12"/>
-            </div>
-        </div>
 
         <div class="control-group">
             <label class="control-label">

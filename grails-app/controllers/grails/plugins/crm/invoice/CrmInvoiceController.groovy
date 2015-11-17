@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 import java.util.concurrent.TimeoutException
 
 /**
- * Order CRUD Controller.
+ * Invoice CRUD Controller.
  */
 class CrmInvoiceController {
 
@@ -73,18 +73,18 @@ class CrmInvoiceController {
     }
 
     def create() {
-        def crmInvoice = new CrmInvoice(invoice: new CrmEmbeddedAddress(), delivery: new CrmEmbeddedAddress(), orderDate: new java.sql.Date(System.currentTimeMillis()))
+        def crmInvoice = new CrmInvoice(invoice: new CrmEmbeddedAddress(), delivery: new CrmEmbeddedAddress(), invoiceDate: new java.sql.Date(System.currentTimeMillis()))
 
         if (request.post) {
             try {
-                crmInvoice = crmInvoiceService.saveOrder(crmInvoice, params)
+                crmInvoice = crmInvoiceService.saveInvoice(crmInvoice, params)
             } catch (CrmValidationException e) {
                 crmInvoice = e[0]
             }
             if (!crmInvoice.hasErrors()) {
                 def currentUser = crmSecurityService.currentUser
                 event(for: "crmInvoice", topic: "created", fork: false, data: [id: crmInvoice.id, tenant: crmInvoice.tenantId, user: currentUser?.username])
-                flash.success = message(code: 'crmInvoice.created.message', args: [message(code: 'crmInvoice.label', default: 'Order'), crmInvoice.toString()])
+                flash.success = message(code: 'crmInvoice.created.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), crmInvoice.toString()])
                 redirect(action: "show", id: crmInvoice.id)
                 return
             }
@@ -95,17 +95,13 @@ class CrmInvoiceController {
         }
 
         def metadata = [:]
-        metadata.orderStatusList = crmInvoiceService.listOrderStatus(null).findAll { it.enabled }
-        if (crmInvoice.orderStatus && !metadata.orderStatusList.contains(crmInvoice.orderStatus)) {
-            metadata.orderStatusList << crmInvoice.orderStatus
+        metadata.invoiceStatusList = crmInvoiceService.listInvoiceStatus(null).findAll { it.enabled }
+        if (crmInvoice.invoiceStatus && !metadata.invoiceStatusList.contains(crmInvoice.invoiceStatus)) {
+            metadata.invoiceStatusList << crmInvoice.invoiceStatus
         }
-        metadata.orderTypeList = crmInvoiceService.listOrderType(null).findAll { it.enabled }
-        if (crmInvoice.orderType && !metadata.orderTypeList.contains(crmInvoice.orderType)) {
-            metadata.orderTypeList << crmInvoice.orderType
-        }
-        metadata.deliveryTypeList = crmInvoiceService.listDeliveryType(null).findAll { it.enabled }
-        if (crmInvoice.deliveryType && !metadata.deliveryTypeList.contains(crmInvoice.deliveryType)) {
-            metadata.deliveryTypeList << crmInvoice.deliveryType
+        metadata.paymentTermList = crmInvoiceService.listPaymentTerm(null).findAll { it.enabled }
+        if (crmInvoice.paymentTerm && !metadata.paymentTermList.contains(crmInvoice.paymentTerm)) {
+            metadata.paymentTermList << crmInvoice.paymentTerm
         }
 
         return [crmInvoice: crmInvoice, metadata: metadata]
@@ -114,19 +110,19 @@ class CrmInvoiceController {
     def edit(Long id) {
         def crmInvoice = CrmInvoice.findByIdAndTenantId(id, TenantUtils.tenant)
         if (!crmInvoice) {
-            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Order'), id])
+            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), id])
             redirect(action: "index")
             return
         }
         if (request.post) {
             if (params.int('version') != null && crmInvoice.version > params.int('version')) {
                 crmInvoice.errors.rejectValue("version", "crmInvoice.optimistic.locking.failure",
-                        [message(code: 'crmInvoice.label', default: 'Order')] as Object[],
-                        "Another user has updated this Order while you were editing")
+                        [message(code: 'crmInvoice.label', default: 'Invoice')] as Object[],
+                        "Another user has updated this invoice while you were editing")
             } else {
                 def ok = false
                 try {
-                    crmInvoice = crmInvoiceService.saveOrder(crmInvoice, params)
+                    crmInvoice = crmInvoiceService.saveInvoice(crmInvoice, params)
                     ok = !crmInvoice.hasErrors()
                 } catch (CrmValidationException e) {
                     crmInvoice = (CrmInvoice) e[0]
@@ -143,7 +139,7 @@ class CrmInvoiceController {
                 if (ok) {
                     def currentUser = crmSecurityService.currentUser
                     event(for: "crmInvoice", topic: "updated", fork: false, data: [id: crmInvoice.id, tenant: crmInvoice.tenantId, user: currentUser?.username])
-                    flash.success = message(code: 'crmInvoice.updated.message', args: [message(code: 'crmInvoice.label', default: 'Order'), crmInvoice.toString()])
+                    flash.success = message(code: 'crmInvoice.updated.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), crmInvoice.toString()])
                     redirect(action: "show", id: crmInvoice.id)
                     return
                 }
@@ -151,17 +147,13 @@ class CrmInvoiceController {
         }
 
         def metadata = [:]
-        metadata.orderStatusList = crmInvoiceService.listOrderStatus(null).findAll { it.enabled }
-        if (crmInvoice.orderStatus && !metadata.orderStatusList.contains(crmInvoice.orderStatus)) {
-            metadata.orderStatusList << crmInvoice.orderStatus
+        metadata.invoiceStatusList = crmInvoiceService.listInvoiceStatus(null).findAll { it.enabled }
+        if (crmInvoice.invoiceStatus && !metadata.invoiceStatusList.contains(crmInvoice.invoiceStatus)) {
+            metadata.invoiceStatusList << crmInvoice.invoiceStatus
         }
-        metadata.orderTypeList = crmInvoiceService.listOrderType(null).findAll { it.enabled }
-        if (crmInvoice.orderType && !metadata.orderTypeList.contains(crmInvoice.orderType)) {
-            metadata.orderTypeList << crmInvoice.orderType
-        }
-        metadata.deliveryTypeList = crmInvoiceService.listDeliveryType(null).findAll { it.enabled }
-        if (crmInvoice.deliveryType && !metadata.deliveryTypeList.contains(crmInvoice.deliveryType)) {
-            metadata.deliveryTypeList << crmInvoice.deliveryType
+        metadata.paymentTermList = crmInvoiceService.listPaymentTerm(null).findAll { it.enabled }
+        if (crmInvoice.paymentTerm && !metadata.paymentTermList.contains(crmInvoice.paymentTerm)) {
+            metadata.paymentTermList << crmInvoice.paymentTerm
         }
         metadata.vatList = getVatOptions()
         metadata.allProducts = getProductList(crmInvoice)
@@ -172,7 +164,7 @@ class CrmInvoiceController {
     def delete(Long id) {
         def crmInvoice = CrmInvoice.findByIdAndTenantId(id, TenantUtils.tenant)
         if (!crmInvoice) {
-            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Order'), id])
+            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), id])
             redirect(action: "list")
             return
         }
@@ -180,11 +172,11 @@ class CrmInvoiceController {
         try {
             def tombstone = crmInvoice.toString()
             crmInvoice.delete(flush: true)
-            flash.warning = message(code: 'crmInvoice.deleted.message', args: [message(code: 'crmInvoice.label', default: 'Order'), tombstone])
+            flash.warning = message(code: 'crmInvoice.deleted.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), tombstone])
             redirect(action: "index")
         }
         catch (DataIntegrityViolationException e) {
-            flash.error = message(code: 'crmInvoice.not.deleted.message', args: [message(code: 'crmInvoice.label', default: 'Order'), id])
+            flash.error = message(code: 'crmInvoice.not.deleted.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), id])
             redirect(action: "edit", id: id)
         }
     }
@@ -194,7 +186,7 @@ class CrmInvoiceController {
         if (crmInvoice) {
             return [crmInvoice: crmInvoice, customer: crmInvoice.getCustomer(), selection: params.getSelectionURI()]
         } else {
-            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Order'), id])
+            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), id])
             redirect(action: "index")
         }
     }
@@ -203,7 +195,7 @@ class CrmInvoiceController {
         def user = crmSecurityService.getUserInfo()
         def ns = params.ns ?: 'crmInvoice'
         if (request.post) {
-            def filename = message(code: 'crmInvoice.label', default: 'Order')
+            def filename = message(code: 'crmInvoice.label', default: 'Invoice')
             try {
                 def topic = params.topic ?: 'export'
                 def result = event(for: ns, topic: topic,
@@ -250,7 +242,9 @@ class CrmInvoiceController {
         if (crmProductService != null) {
             result = crmProductService.list().collect{[id: it.number, label: it.toString()]}
         } else {
-            result = []
+            def user = crmSecurityService.getUserInfo()
+            result = event(for: 'crmInvoice', topic: 'productList',
+                    data: [id: crmInvoice.id, tenant: crmInvoice.tenantId, username: user.username]).waitFor(10000)?.values?.flatten()
         }
         for(item in crmInvoice?.items) {
             if(! result.find{it.id == item.productId}) {
@@ -261,22 +255,22 @@ class CrmInvoiceController {
     }
 
     def addItem(Long id) {
-        def crmInvoice = id ? crmInvoiceService.getOrder(id) : null
+        def crmInvoice = id ? crmInvoiceService.getInvoice(id) : null
         def count = crmInvoice?.items?.size() ?: 0
         def vat = grailsApplication.config.crm.currency.vat.default ?: 0
         def metadata = [:]
         metadata.vatList = getVatOptions()
         metadata.allProducts = getProductList(crmInvoice)
 
-        def item = new CrmInvoiceItem(order: crmInvoice, orderIndex: count + 1, quantity: 1, unit: 'st', price: 0, discount: 0, vat: vat)
+        def item = new CrmInvoiceItem(invoice: crmInvoice, orderIndex: count + 1, quantity: 1, unit: 'st', price: 0, discount: 0, vat: vat)
         render template: 'item', model: [row: 0, bean: item, metadata: metadata]
     }
 
     def deleteItem(Long id) {
         def item = CrmInvoiceItem.get(id)
         if (item) {
-            def order = item.order
-            if (order.tenantId == TenantUtils.tenant) {
+            def crmInvoice = item.invoice
+            if (crmInvoice.tenantId == TenantUtils.tenant) {
                 try {
                     item.delete(flush: true)
                     render 'true'
@@ -293,9 +287,9 @@ class CrmInvoiceController {
     }
 
     def createFavorite(Long id) {
-        def crmInvoice = crmInvoiceService.getOrder(id)
+        def crmInvoice = crmInvoiceService.getInvoice(id)
         if (!crmInvoice) {
-            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Order'), id])
+            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), id])
             redirect action: 'index'
             return
         }
@@ -305,9 +299,9 @@ class CrmInvoiceController {
     }
 
     def deleteFavorite(Long id) {
-        def crmInvoice = crmInvoiceService.getOrder(id)
+        def crmInvoice = crmInvoiceService.getInvoice(id)
         if (!crmInvoice) {
-            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Order'), id])
+            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), id])
             redirect action: 'index'
             return
         }
@@ -334,20 +328,14 @@ class CrmInvoiceController {
         render result as JSON
     }
 
-    def autocompleteOrderStatus() {
-        def result = crmInvoiceService.listOrderStatus(params.remove('term'), params).collect { it.toString() }
+    def autocompleteInvoiceStatus() {
+        def result = crmInvoiceService.listInvoiceStatus(params.remove('term'), params).collect { it.toString() }
         WebUtils.defaultCache(response)
         render result as JSON
     }
 
-    def autocompleteOrderType() {
-        def result = crmInvoiceService.listOrderType(params.remove('term'), params).collect { it.toString() }
-        WebUtils.defaultCache(response)
-        render result as JSON
-    }
-
-    def autocompleteDeliveryType() {
-        def result = crmInvoiceService.listDeliveryType(params.remove('term'), params).collect { it.toString() }
+    def autocompletePaymentTerm() {
+        def result = crmInvoiceService.listPaymentTerm(params.remove('term'), params).collect { it.toString() }
         WebUtils.defaultCache(response)
         render result as JSON
     }

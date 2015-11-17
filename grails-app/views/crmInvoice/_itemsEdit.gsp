@@ -9,7 +9,6 @@
         <th><g:message code="crmInvoiceItem.quantity.label"/></th>
         <th><g:message code="crmInvoiceItem.unit.label"/></th>
         <th><g:message code="crmInvoiceItem.price.label"/></th>
-        <th><g:message code="crmInvoiceItem.discount.label"/></th>
         <th><g:message code="crmInvoiceItem.vat.label"/></th>
         <th></th>
     </tr>
