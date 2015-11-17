@@ -4,13 +4,21 @@
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'crmInvoice.label', default: 'Order')}"/>
     <title><g:message code="crmInvoice.export.title" args="[entityName]"/></title>
+    <r:script>
+    $(document).ready(function() {
+        $('h3 a').click(function(ev) {
+            ev.preventDefault();
+            $(this).closest('form').submit();
+        });
+    });
+    </r:script>
 </head>
 
 <body>
 
 <crm:header title="crmInvoice.export.title" subtitle="crmInvoice.export.subtitle" args="[entityName]"/>
 
-<g:each in="${layouts?.sort{it.name}}" var="l">
+<g:each in="${layouts?.sort{it.order ?: it.name}}" var="l">
     <g:form action="export" class="well">
         <input type="hidden" name="id" value="${id}"/>
         <input type="hidden" name="q" value="${select.encode(selection: selection)}"/>

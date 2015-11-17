@@ -1,4 +1,4 @@
-<table id="order-items" class="table table-striped">
+<table id="invoice-items" class="table table-striped">
     <thead>
     <tr>
         <th><g:message code="crmInvoiceItem.productId.label"/></th>
@@ -19,8 +19,8 @@
             <td>
                 <g:fieldValue bean="${item}" field="productName"/>
                 <g:if test="${item.comment}">
-                    <i class="icon-comment" title="${item.order.customerName.encodeAsHTML()}:"
-                       data-content="- ${item.comment.encodeAsHTML()}"></i>
+                    <i class="icon-comment" title="${message(code: 'crmInvoiceItem.comment.label', default: 'Comments')}:"
+                       data-content="- ${item.comment}"></i>
                 </g:if>
             </td>
             <td style="white-space: nowrap;"><g:formatNumber number="${item.quantity}"

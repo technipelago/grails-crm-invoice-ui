@@ -6,7 +6,7 @@
     <title><g:message code="crmInvoice.show.title" args="[entityName, crmInvoice]"/></title>
     <r:script>
         $(document).ready(function () {
-            $('#order-items tbody i').popover();
+            $('#invoice-items tbody i').popover();
         });
     </r:script>
 </head>
