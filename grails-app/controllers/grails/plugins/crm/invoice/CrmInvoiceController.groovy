@@ -6,6 +6,7 @@ import grails.plugins.crm.core.TenantUtils
 import grails.plugins.crm.core.WebUtils
 import grails.plugins.crm.core.CrmValidationException
 import grails.plugins.crm.invoice.CrmInvoiceQueryCommand
+import grails.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
 
 import javax.servlet.http.HttpServletResponse
@@ -72,6 +73,7 @@ class CrmInvoiceController {
         redirect(action: 'index')
     }
 
+    @Transactional
     def create() {
         def crmInvoice = new CrmInvoice(invoice: new CrmEmbeddedAddress(), delivery: new CrmEmbeddedAddress(), invoiceDate: new java.sql.Date(System.currentTimeMillis()))
 
@@ -107,6 +109,7 @@ class CrmInvoiceController {
         return [crmInvoice: crmInvoice, metadata: metadata]
     }
 
+    @Transactional
     def edit(Long id) {
         def crmInvoice = CrmInvoice.findByIdAndTenantId(id, TenantUtils.tenant)
         if (!crmInvoice) {
