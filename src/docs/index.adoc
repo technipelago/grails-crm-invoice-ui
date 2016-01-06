@@ -35,6 +35,13 @@ that focus on one specific domain, for example *contact*, *project* or *document
 The `crm-invoice-ui` plugin is a companion plugin to the `crm-invoice` plugin.
 It provides a Twitter Bootstrap based user interface for invoice management.
 
+=== Create invoices
+
+In most application invoices are created programatically based on information from the database or external systems.
+But you can also create an invoice manually with the CrmInvoiceController.create() action.
+
+image::invoice-create.png[Create invoice manually]
+
 === Search invoices
 
 To query for invoices you visit `crmIndex/index` which will show the query form.
