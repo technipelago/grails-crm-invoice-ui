@@ -3,9 +3,7 @@
     <tr>
         <th><g:message code="crmInvoiceItem.productId.label"/></th>
         <th><g:message code="crmInvoiceItem.productName.label"/></th>
-        <!--
         <th><g:message code="crmInvoiceItem.comment.label"/></th>
-        -->
         <th><g:message code="crmInvoiceItem.quantity.label"/></th>
         <th><g:message code="crmInvoiceItem.unit.label"/></th>
         <th><g:message code="crmInvoiceItem.price.label"/></th>
