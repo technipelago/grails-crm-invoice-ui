@@ -44,3 +44,11 @@
     </g:each>
     </tbody>
 </table>
+
+<div class="form-actions btn-toolbar">
+    <div class="btn-group">
+        <crm:button type="link" controller="crmInvoice" action="create" visual="success" icon="icon-file icon-white"
+                    label="crmInvoice.button.create.label" permission="crmInvoice:create"
+        params="${[ref: reference]}"/>
+    </div>
+</div>
