@@ -85,6 +85,7 @@ image::invoice-edit-2.png[Edit invoice items]
 
 == Changes
 
+2.4.1:: Payment fields are now open for editing
 2.4.0:: First public release
 
 == License
