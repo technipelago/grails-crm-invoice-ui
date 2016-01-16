@@ -158,6 +158,7 @@ class CrmInvoiceController {
         if (crmInvoice.paymentTerm && !metadata.paymentTermList.contains(crmInvoice.paymentTerm)) {
             metadata.paymentTermList << crmInvoice.paymentTerm
         }
+        metadata.paymentStatusList = [0, 1, 11, 12, 31, 35]
         metadata.vatList = getVatOptions()
         metadata.allProducts = getProductList(crmInvoice)
 
