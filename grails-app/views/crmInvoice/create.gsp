@@ -125,7 +125,7 @@
 <g:set var="invoiceAddress" value="${crmInvoice.invoice}"/>
 <g:set var="deliveryAddress" value="${crmInvoice.delivery}"/>
 
-<crm:header title="crmInvoice.create.title" args="[entityName]"/>
+<crm:header title="crmInvoice.create.title" subtitle="${crmInvoice.reference}" args="[entityName]"/>
 
 <g:hasErrors bean="${crmInvoice}">
     <crm:alert class="alert-error">
@@ -139,6 +139,8 @@
 </g:hasErrors>
 
 <g:form action="create">
+
+    <input type="hidden" name="ref" value="${crmInvoice.ref}"/>
 
     <div class="tabbable">
         <ul class="nav nav-tabs">

@@ -75,7 +75,7 @@ class CrmInvoiceController {
 
     @Transactional
     def create() {
-        def crmInvoice = new CrmInvoice(invoice: new CrmEmbeddedAddress(), delivery: new CrmEmbeddedAddress(), invoiceDate: new java.sql.Date(System.currentTimeMillis()))
+        def crmInvoice = new CrmInvoice(ref: params.ref, invoice: new CrmEmbeddedAddress(), delivery: new CrmEmbeddedAddress(), invoiceDate: new java.sql.Date(System.currentTimeMillis()))
 
         if (request.post) {
             try {
