@@ -96,11 +96,12 @@
                 </select:link>
             </div>
         </g:if>
-
+        <%--
         <div class="btn-group">
             <crm:button type="link" action="create" visual="success" icon="icon-file icon-white"
                         label="crmInvoice.button.create.label" permission="crmInvoice:create"/>
         </div>
+        --%>
     </g:form>
 </div>
 

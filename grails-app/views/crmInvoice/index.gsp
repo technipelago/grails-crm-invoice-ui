@@ -165,8 +165,10 @@
             <crm:button action="list" icon="icon-search icon-white" visual="primary"
                         label="crmInvoice.button.search.label"/>
         </crm:selectionMenu>
+        <%--
         <crm:button type="link" group="true" action="create" visual="success" icon="icon-file icon-white"
                     label="crmInvoice.button.create.label" permission="crmInvoice:create"/>
+        --%>
         <g:link action="clearQuery" class="btn btn-link"><g:message code="crmInvoice.button.query.clear.label"
                                                                     default="Reset fields"/></g:link>
     </div>
