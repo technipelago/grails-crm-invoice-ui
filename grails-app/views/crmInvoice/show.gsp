@@ -42,6 +42,13 @@
     <li><a href="#items" data-toggle="tab"><g:message code="crmInvoice.tab.items.label"/><crm:countIndicator
             count="${crmInvoice.items.size()}"/></a>
     </li>
+    <g:if test="${crmInvoice.description}">
+        <li><a href="#misc" data-toggle="tab"><g:message code="crmInvoice.tab.misc.label"/><crm:countIndicator
+        count="1"/></a></li>
+    </g:if>
+    <li>
+
+    </li>
     <crm:pluginViews location="tabs" var="view">
         <crm:pluginTab id="${view.id}" label="${view.label}" count="${view.model?.totalCount}"/>
     </crm:pluginViews>
@@ -271,6 +278,14 @@
 <div class="tab-pane" id="items">
     <g:render template="items" model="${[bean:crmInvoice, list: crmInvoice.items]}"/>
 </div>
+
+    <g:if test="${crmInvoice.description}">
+        <div class="tab-pane" id="misc">
+            <blockquote>
+                <p><g:decorate encode="HTML" nlbr="true">${crmInvoice.description}</g:decorate></p>
+            </blockquote>
+        </div>
+    </g:if>
 
 <crm:pluginViews location="tabs" var="view">
     <div class="tab-pane tab-${view.id}" id="${view.id}">
