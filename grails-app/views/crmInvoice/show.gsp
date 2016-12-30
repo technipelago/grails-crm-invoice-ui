@@ -227,6 +227,26 @@
                     label="crmInvoice.button.edit.label" permission="crmInvoice:edit">
         </crm:button>
 
+        <crm:button type="link" group="true" action="create" params="${[ref: crmInvoice.ref]}" visual="success"
+                    icon="icon-file icon-white"
+                    label="crmInvoice.button.create.label" permission="crmInvoice:create">
+            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <g:link action="copy" id="${crmInvoice.id}">
+                        <g:message code="crmInvoice.button.copy.label" default="Copy invoice"/>
+                    </g:link>
+                </li>
+                <li>
+                    <g:link action="copy" params="${[id: crmInvoice.id, credit: true]}">
+                        <g:message code="crmInvoice.button.credit.label" default="Credit invoice"/>
+                    </g:link>
+                </li>
+            </ul>
+        </crm:button>
+
         <div class="btn-group">
             <select:link action="export" accesskey="p" params="${[ns:'crmInvoice']}" selection="${new URI('bean://crmInvoiceService/list?id=' + crmInvoice.id)}" class="btn btn-info">
                 <i class="icon-print icon-white"></i>

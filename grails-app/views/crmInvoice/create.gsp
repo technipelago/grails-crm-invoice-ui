@@ -148,6 +148,8 @@
             </li>
             <li><a href="#items" data-toggle="tab"><g:message code="crmInvoice.tab.items.label"/><crm:countIndicator
                     count="${crmInvoice.items?.size()}"/></a></li>
+            <li><a href="#misc" data-toggle="tab"><g:message code="crmInvoice.tab.misc.label"/><crm:countIndicator
+                        count="${crmInvoice.description ? 1 : 0}"/></a></li>
             <crm:pluginViews location="tabs" var="view">
                 <crm:pluginTab id="${view.id}" label="${view.label}" count="${view.model?.totalCount}"/>
             </crm:pluginViews>
@@ -410,6 +412,24 @@
 
             <div class="tab-pane" id="items">
                 <tmpl:itemsEdit bean="${crmInvoice}" metadata="${metadata}"/>
+            </div>
+
+            <div class="tab-pane" id="misc">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div class="control-group">
+                            <%--
+                            <label class="control-label">
+                                <g:message code="crmInvoice.description.label" default="Description"/>
+                            </label>
+                            --%>
+                            <div class="controls">
+                                <g:textArea name="description" value="${crmInvoice.description}" rows="12" cols="70"
+                                            class="span12"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <crm:pluginViews location="tabs" var="view">

@@ -110,6 +110,33 @@ class CrmInvoiceController {
     }
 
     @Transactional
+    def copy(Long id, boolean credit) {
+        def original = crmInvoiceService.getInvoice(id)
+        if (!original) {
+            flash.error = message(code: 'crmInvoice.not.found.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), id])
+            redirect(action: "index")
+            return
+        }
+
+        def crmInvoice = original.copy(credit)
+
+        def metadata = [:]
+        metadata.invoiceStatusList = crmInvoiceService.listInvoiceStatus(null).findAll { it.enabled }
+        if (crmInvoice.invoiceStatus && !metadata.invoiceStatusList.contains(crmInvoice.invoiceStatus)) {
+            metadata.invoiceStatusList << crmInvoice.invoiceStatus
+        }
+        metadata.paymentTermList = crmInvoiceService.listPaymentTerm(null).findAll { it.enabled }
+        if (crmInvoice.paymentTerm && !metadata.paymentTermList.contains(crmInvoice.paymentTerm)) {
+            metadata.paymentTermList << crmInvoice.paymentTerm
+        }
+        metadata.paymentStatusList = CrmInvoice.PAYMENT_STATUS_LIST
+        metadata.vatList = getVatOptions()
+        metadata.allProducts = getProductList(crmInvoice)
+
+        render view: 'create', model: [crmInvoice: crmInvoice, metadata: metadata]
+    }
+
+    @Transactional
     def edit(Long id) {
         def crmInvoice = CrmInvoice.findByIdAndTenantId(id, TenantUtils.tenant)
         if (!crmInvoice) {
@@ -158,7 +185,7 @@ class CrmInvoiceController {
         if (crmInvoice.paymentTerm && !metadata.paymentTermList.contains(crmInvoice.paymentTerm)) {
             metadata.paymentTermList << crmInvoice.paymentTerm
         }
-        metadata.paymentStatusList = [0, 1, 11, 12, 31, 35]
+        metadata.paymentStatusList = CrmInvoice.PAYMENT_STATUS_LIST
         metadata.vatList = getVatOptions()
         metadata.allProducts = getProductList(crmInvoice)
 
