@@ -85,6 +85,8 @@ image::invoice-edit-2.png[Edit invoice items]
 
 == Changes
 
+2.4.3:: Add missing i18n messages
+2.4.2:: Adds support for credit invoices
 2.4.1:: Payment fields are now open for editing
 2.4.0:: First public release
 
