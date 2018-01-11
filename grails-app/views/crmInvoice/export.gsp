@@ -37,8 +37,9 @@
             <input type="hidden" name="${ly.key}" value="${ly.value}"/>
         </g:each>
         <input type="hidden" name="id" value="${id}"/>
-        <input type="hidden" name="q" value="${select.encode(selection: selection)}"/>
-
+        <g:if test="${selection != null}">
+            <input type="hidden" name="q" value="${select.encode(selection: selection)}"/>
+        </g:if>
         <div class="row-fluid">
             <div class="span7">
                 <h4><a href="#">${l.name?.encodeAsHTML()}</a></h4>
