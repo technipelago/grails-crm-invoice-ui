@@ -250,7 +250,7 @@ class CrmInvoiceController {
             }
             redirect(action: "index")
         } else {
-            def uri = params.getSelectionURI()
+            def uri = params.getSelectionURI() ?: new URI('bean://crmInvoiceService/list?id=0')
             def layouts = event(for: ns, topic: (params.topic ?: 'exportLayout'),
                     data: [tenant: TenantUtils.tenant, username: user.username, uri: uri]).waitFor(10000)?.values?.flatten()
             [layouts: layouts, selection: uri]
