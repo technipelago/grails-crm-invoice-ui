@@ -54,7 +54,7 @@
                 </button>
                 </div>
             <div class="span2" style="padding-top: 10px;">
-                <g:if test="${l.save}">
+                <g:if test="${l.enableSave}">
                     <label class="checkbox">
                         <g:checkBox name="save"/>
                         <g:message code="crmExport.save.output" default="Spara rapporten"/>
