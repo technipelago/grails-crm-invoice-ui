@@ -273,9 +273,10 @@ class CrmInvoiceController {
         if (crmProductService != null) {
             result = crmProductService.list().collect{[id: it.number, label: it.toString()]}
         } else {
+            def tenant = crmInvoice?.tenantId ?: TenantUtils.tenant
             def user = crmSecurityService.getUserInfo()
             result = event(for: 'crmInvoice', topic: 'productList',
-                    data: [id: crmInvoice.id, tenant: crmInvoice.tenantId, username: user.username]).waitFor(10000)?.values?.flatten()
+                    data: [id: crmInvoice?.id, tenant: tenant, username: user.username]).waitFor(10000)?.values?.flatten()
         }
         for(item in crmInvoice?.items) {
             if(! result.find{it.id == item.productId}) {
