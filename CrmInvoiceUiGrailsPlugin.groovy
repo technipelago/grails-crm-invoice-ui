@@ -16,7 +16,7 @@
 
 class CrmInvoiceUiGrailsPlugin {
     def groupId = ""
-    def version = "2.4.4-SNAPSHOT"
+    def version = "2.4.5"
     def grailsVersion = "2.4 > *"
     def dependsOn = [:]
     def loadAfter = ['crmInvoice']
