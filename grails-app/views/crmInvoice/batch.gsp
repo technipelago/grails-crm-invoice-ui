@@ -116,6 +116,13 @@
                     $(":input:enabled:first", html).focus();
                 });
             });
+          $('.crm-confirm').submit(function(ev) {
+            if(confirm("${message(code: 'crmInvoice.batch.confirm', default: 'Press ok to create invoices')}")) {
+              return true;
+            }
+            ev.preventDefault();
+            return false;
+          });
         });
     </script>
 </head>
@@ -138,9 +145,10 @@
     </crm:alert>
 </g:hasErrors>
 
-<g:form action="create">
+<g:form action="batch" class="crm-confirm">
 
-    <input type="hidden" name="ref" value="${crmInvoice.ref}"/>
+    <input type="hidden" name="referer" value="${params.referer}"/>
+    <input type="hidden" name="q" value="${select.encode(selection: selection)}"/>
 
     <div class="tabbable">
         <ul class="nav nav-tabs">
@@ -159,17 +167,7 @@
             <div class="tab-pane active" id="main">
 
                 <div class="row-fluid">
-                    <div class="span3">
-
-                        <div class="control-group">
-                            <label class="control-label">
-                                <g:message code="crmInvoice.number.label"/>
-                            </label>
-
-                            <div class="controls">
-                                <g:textField name="number" value="${crmInvoice.number}" class="span8" autofocus=""/>
-                            </div>
-                        </div>
+                    <div class="span4">
 
                         <div class="control-group">
                             <label class="control-label">
@@ -215,6 +213,10 @@
                             </div>
                         </div>
 
+
+                    </div>
+
+                    <div class="span4">
                         <div class="control-group">
                             <label class="control-label">
                                 <g:message code="crmInvoice.paymentTerm.label"/>
@@ -229,16 +231,6 @@
 
                         <div class="control-group">
                             <label class="control-label">
-                                <g:message code="crmInvoice.reference1.label"/>
-                            </label>
-
-                            <div class="controls">
-                                <g:textField name="reference1" value="${crmInvoice.reference1}" class="span12"/>
-                            </div>
-                        </div>
-
-                        <div class="control-group">
-                            <label class="control-label">
                                 <g:message code="crmInvoice.reference2.label"/>
                             </label>
 
@@ -247,171 +239,17 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="span3">
-                        <div class="row-fluid">
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.customerName.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="customerFirstName" value="${crmInvoice.customerFirstName}"
-                                                 class="span5" autocomplete="off"/>
-                                    <g:textField name="customerLastName" value="${crmInvoice.customerLastName}"
-                                                 class="span7" autocomplete="off"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.customerCompany.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="customerCompany" value="${crmInvoice.customerCompany}"
-                                                 class="span12"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.invoice.address1.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="invoice.address1" value="${invoiceAddress?.address1}"
-                                                 class="span12"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.invoice.address2.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="invoice.address2" value="${invoiceAddress?.address2}"
-                                                 class="span12"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmAddress.postalAddress.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="invoice.postalCode" value="${invoiceAddress?.postalCode}"
-                                                 class="span4"/>
-                                    <g:textField name="invoice.city" value="${invoiceAddress?.city}" class="span8"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.customerTel.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="customerTel" value="${crmInvoice.customerTel}" class="span12"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.customerEmail.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="customerEmail" value="${crmInvoice.customerEmail}" class="span12"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="span3">
-                        <div class="row-fluid">
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.delivery.addressee.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="delivery.addressee" value="${deliveryAddress?.addressee}"
-                                                 class="span12" autocomplete="off"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.delivery.address1.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="delivery.address1" value="${deliveryAddress?.address1}"
-                                                 class="span12"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.delivery.address2.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="delivery.address2" value="${deliveryAddress?.address2}"
-                                                 class="span12"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmAddress.postalAddress.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="delivery.postalCode" value="${deliveryAddress?.postalCode}"
-                                                 class="span4"/>
-                                    <g:textField name="delivery.city" value="${deliveryAddress?.city}" class="span8"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.reference3.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="reference3" value="${crmInvoice.reference3}" class="span12"/>
-                                </div>
-                            </div>
-
-                            <div class="control-group">
-                                <label class="control-label">
-                                    <g:message code="crmInvoice.reference4.label"/>
-                                </label>
-
-                                <div class="controls">
-                                    <g:textField name="reference4" value="${crmInvoice.reference4}" class="span12"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
 
                 <div class="form-actions">
-                    <crm:button visual="success" icon="icon-ok icon-white" label="crmInvoice.button.save.label"/>
+                    <crm:button visual="success" icon="icon-ok icon-white" label="crmInvoice.button.batch.label"/>
                 </div>
 
             </div>
 
             <div class="tab-pane" id="items">
-                <tmpl:itemsEdit bean="${crmInvoice}" metadata="${metadata}" save="${true}"/>
+                <tmpl:itemsEdit bean="${crmInvoice}" metadata="${metadata}" save="${false}"/>
             </div>
 
             <div class="tab-pane" id="misc">

@@ -110,6 +110,32 @@ class CrmInvoiceController {
     }
 
     @Transactional
+    def batch() {
+        def crmInvoice = new CrmInvoice(invoice: new CrmEmbeddedAddress(), delivery: new CrmEmbeddedAddress(), invoiceDate: new java.sql.Date(System.currentTimeMillis()), items: [])
+
+        if (request.post) {
+            def currentUser = crmSecurityService.currentUser
+            def result = event(for: 'crmInvoice', topic: 'create', fork: false,
+                    data: [user: currentUser?.username, tenant: TenantUtils.tenant, locale: request.locale, selection: params.getSelectionURI(), invoice: params]).waitFor(60000)?.value
+            flash.success = message(code: 'crmInvoice.created.message', args: [message(code: 'crmInvoice.label', default: 'Invoice'), result.toString()])
+            redirect(action: "index")
+            return
+        }
+
+        def metadata = [:]
+        metadata.invoiceStatusList = crmInvoiceService.listInvoiceStatus(null).findAll { it.enabled }
+        if (crmInvoice.invoiceStatus && !metadata.invoiceStatusList.contains(crmInvoice.invoiceStatus)) {
+            metadata.invoiceStatusList << crmInvoice.invoiceStatus
+        }
+        metadata.paymentTermList = crmInvoiceService.listPaymentTerm(null).findAll { it.enabled }
+        if (crmInvoice.paymentTerm && !metadata.paymentTermList.contains(crmInvoice.paymentTerm)) {
+            metadata.paymentTermList << crmInvoice.paymentTerm
+        }
+
+        return [crmInvoice: crmInvoice, metadata: metadata, selection: params.getSelectionURI(), referer: params.referer]
+    }
+
+    @Transactional
     def copy(Long id, boolean credit) {
         def original = crmInvoiceService.getInvoice(id)
         if (!original) {

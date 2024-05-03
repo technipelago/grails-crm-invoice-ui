@@ -528,7 +528,7 @@
             </div>
 
             <div class="tab-pane" id="items">
-                <tmpl:itemsEdit bean="${crmInvoice}" metadata="${metadata}"/>
+                <tmpl:itemsEdit bean="${crmInvoice}" metadata="${metadata}" save="${true}"/>
             </div>
 
             <div class="tab-pane" id="misc">

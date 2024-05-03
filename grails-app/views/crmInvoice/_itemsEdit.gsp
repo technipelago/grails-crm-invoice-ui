@@ -22,9 +22,9 @@
             <g:if test="${bean.id}">
                 <crm:button action="edit" visual="warning" icon="icon-ok icon-white" label="crmInvoice.button.update.label"/>
             </g:if>
-            <g:else>
+            <g:elseif test="${save}">
                 <crm:button visual="warning" icon="icon-ok icon-white" label="crmInvoice.button.save.label"/>
-            </g:else>
+            </g:elseif>
             <button type="button" class="btn btn-success" id="btn-add-item">
                 <i class="icon-plus icon-white"></i>
                 <g:message code="crmInvoiceItem.button.add.label" default="Add Item"/>
