@@ -33,7 +33,7 @@ class CrmInvoiceStatusController {
     ]
 
     def selectionService
-    def crmOrderService
+    def crmInvoiceService
 
     def domainClass = CrmInvoiceStatus
 
@@ -68,7 +68,7 @@ class CrmInvoiceStatusController {
     }
 
     def create() {
-        def crmInvoiceStatus = crmOrderService.createInvoiceStatus(params)
+        def crmInvoiceStatus = crmInvoiceService.createInvoiceStatus(params)
         switch (request.method) {
             case 'GET':
                 return [crmInvoiceStatus: crmInvoiceStatus]
